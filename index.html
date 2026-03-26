@@ -593,19 +593,20 @@
               <div class="card-label">Carry-on Bag</div>
               <div class="card-value">One small backpack</div>
             </div>
+<div class="input-card">
+  <div class="card-label">Row</div>
+  <input class="answer-input" data-answer="row 24" id="s2q1" placeholder="Type the missing information...">
+</div>
 
-            <div class="input-card">
-              <div class="card-label">Which row?</div>
-              <input class="answer-input" data-answer="row 24" id="s2q1" placeholder="Type your answer...">
-            </div>
-            <div class="input-card">
-              <div class="card-label">Seat type (A/B/C)?</div>
-              <input class="answer-input" data-answer="middle seat" id="s2q2" placeholder="Type your answer...">
-            </div>
-            <div class="input-card">
-              <div class="card-label">Where to put the bag?</div>
-              <input class="answer-input" data-answer="overhead bin above row 24" id="s2q3" placeholder="Type your answer...">
-            </div>
+<div class="input-card">
+  <div class="card-label">Seat Type</div>
+  <input class="answer-input" data-answer="middle seat" id="s2q2" placeholder="Type the missing information...">
+</div>
+
+<div class="input-card">
+  <div class="card-label">Bag Location</div>
+  <input class="answer-input" data-answer="overhead bin above row 24" id="s2q3" placeholder="Type the missing information...">
+</div>
           </div>
         </div>
       </div>
@@ -662,17 +663,19 @@
             </div>
 
             <div class="input-card">
-              <div class="card-label">Why can't I use the bin above row 24?</div>
-              <input class="answer-input" data-answer="it is full" id="s3q1" placeholder="Type your answer...">
-            </div>
-            <div class="input-card">
-              <div class="card-label">Where can I put the suitcase?</div>
-              <input class="answer-input" data-answer="above row 27" id="s3q2" placeholder="Type your answer...">
-            </div>
-            <div class="input-card">
-              <div class="card-label">Where can I put the handbag?</div>
-              <input class="answer-input" data-answer="under the seat" id="s3q3" placeholder="Type your answer...">
-            </div>
+  <div class="card-label">Bin Problem</div>
+  <input class="answer-input" data-answer="it is full" id="s3q1" placeholder="Type the missing information...">
+</div>
+
+<div class="input-card">
+  <div class="card-label">Suitcase Location</div>
+  <input class="answer-input" data-answer="above row 27" id="s3q2" placeholder="Type the missing information...">
+</div>
+
+<div class="input-card">
+  <div class="card-label">Handbag Location</div>
+  <input class="answer-input" data-answer="under the seat" id="s3q3" placeholder="Type the missing information...">
+</div>
           </div>
         </div>
       </div>
@@ -729,17 +732,19 @@
             </div>
 
             <div class="input-card">
-              <div class="card-label">What seat is Student A in?</div>
-              <input class="answer-input" data-answer="24c" id="s4q1" placeholder="Type your answer...">
-            </div>
-            <div class="input-card">
-              <div class="card-label">What type is seat 24C?</div>
-              <input class="answer-input" data-answer="aisle seat" id="s4q2" placeholder="Type your answer...">
-            </div>
-            <div class="input-card">
-              <div class="card-label">What should you do?</div>
-              <input class="answer-input" data-answer="stand up" id="s4q3" placeholder="Type your answer...">
-            </div>
+  <div class="card-label">Other Passenger's Seat</div>
+  <input class="answer-input" data-answer="24c" id="s4q1" placeholder="Type the missing information...">
+</div>
+
+<div class="input-card">
+  <div class="card-label">Seat Type</div>
+  <input class="answer-input" data-answer="aisle seat" id="s4q2" placeholder="Type the missing information...">
+</div>
+
+<div class="input-card">
+  <div class="card-label">What You Should Do</div>
+  <input class="answer-input" data-answer="stand up" id="s4q3" placeholder="Type the missing information...">
+</div>
           </div>
         </div>
       </div>
@@ -798,19 +803,20 @@
               <div class="card-label">Situation</div>
               <div class="card-value">Tray table is down, phone is not ready</div>
             </div>
+<div class="input-card">
+  <div class="card-label">Safety Item</div>
+  <input class="answer-input" data-answer="seatbelt" id="s5q1" placeholder="Type the missing information...">
+</div>
 
-            <div class="input-card">
-              <div class="card-label">What must you fasten?</div>
-              <input class="answer-input" data-answer="seatbelt" id="s5q1" placeholder="Type your answer...">
-            </div>
-            <div class="input-card">
-              <div class="card-label">What must you do with the tray table?</div>
-              <input class="answer-input" data-answer="put it up" id="s5q2" placeholder="Type your answer...">
-            </div>
-            <div class="input-card">
-              <div class="card-label">What mode for your phone?</div>
-              <input class="answer-input" data-answer="airplane mode" id="s5q3" placeholder="Type your answer...">
-            </div>
+<div class="input-card">
+  <div class="card-label">Tray Table Action</div>
+  <input class="answer-input" data-answer="put it up" id="s5q2" placeholder="Type the missing information...">
+</div>
+
+<div class="input-card">
+  <div class="card-label">Phone Setting</div>
+  <input class="answer-input" data-answer="airplane mode" id="s5q3" placeholder="Type the missing information...">
+</div>
           </div>
         </div>
       </div>
@@ -873,7 +879,10 @@
 
         input.classList.remove('correct', 'wrong');
 
-        if (userAnswer === correctAnswer || userAnswer.includes(correctAnswer) || correctAnswer.includes(userAnswer)) {
+if (
+  userAnswer !== "" &&
+  (userAnswer === correctAnswer || userAnswer.includes(correctAnswer) || correctAnswer.includes(userAnswer))
+) {
           input.classList.add('correct');
           correct++;
         } else {
