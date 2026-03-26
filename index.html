@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Boarding the Plane – Airport Game</title>
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #1a3a4a 0%, #0d6e8c 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    /* ── Card Container ── */
+    .card {
+      background: #fff;
+      border-radius: 18px;
+      max-width: 620px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+      overflow: hidden;
+    }
+
+    /* ── Header ── */
+    .card-header {
+      background: linear-gradient(90deg, #1a7fa8, #0d6e8c);
+      color: #fff;
+      padding: 22px 28px 18px;
+    }
+    .card-header .label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      opacity: 0.75;
+      margin-bottom: 4px;
+    }
+    .card-header h1 {
+      font-size: 22px;
+      font-weight: 700;
+    }
+    .card-header p {
+      font-size: 13px;
+      opacity: 0.85;
+      margin-top: 4px;
+    }
+
+    /* ── Progress Bar ── */
+    .progress-wrap {
+      background: rgba(255,255,255,0.2);
+      border-radius: 20px;
+      height: 6px;
+      margin-top: 14px;
+      overflow: hidden;
+    }
+    .progress-bar {
+      background: #7ee8fa;
+      height: 100%;
+      border-radius: 20px;
+      transition: width 0.5s ease;
+    }
+    .progress-label {
+      font-size: 11px;
+      opacity: 0.75;
+      margin-top: 5px;
+    }
+
+    /* ── Screen Body ── */
+    .screen { display: none; padding: 28px; animation: fadeIn 0.35s ease; }
+    .screen.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Scene Illustration ── */
+    .scene {
+      background: #e8f6fb;
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+    .scene-emoji { font-size: 52px; flex-shrink: 0; }
+    .scene-text h2 { font-size: 16px; color: #0d6e8c; font-weight: 700; margin-bottom: 4px; }
+    .scene-text p  { font-size: 14px; color: #444; line-height: 1.5; }
+
+    /* ── Dialogue Bubble ── */
+    .dialogue {
+      background: #fff3cd;
+      border-left: 4px solid #f0a500;
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 20px;
+      font-size: 15px;
+      color: #333;
+      line-height: 1.6;
+    }
+    .dialogue .speaker {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #f0a500;
+      margin-bottom: 4px;
+    }
+
+    /* ── Choices ── */
+    .choices { display: flex; flex-direction: column; gap: 10px; margin-bottom: 8px; }
+    .choice-btn {
+      background: #f4f8fb;
+      border: 2px solid #cde5f0;
+      border-radius: 10px;
+      padding: 13px 16px;
+      font-size: 14px;
+      color: #1a3a4a;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s;
+      line-height: 1.45;
+    }
+    .choice-btn:hover  { background: #daf0fa; border-color: #1a7fa8; }
+    .choice-btn.correct { background: #d4edda; border-color: #28a745; color: #155724; }
+    .choice-btn.wrong   { background: #f8d7da; border-color: #dc3545; color: #721c24; }
+    .choice-btn:disabled { cursor: default; }
+
+    /* ── Feedback ── */
+    .feedback {
+      display: none;
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 14px;
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+    .feedback.show { display: block; animation: fadeIn 0.3s ease; }
+    .feedback.good { background: #d4edda; color: #155724; border-left: 4px solid #28a745; }
+    .feedback.bad  { background: #f8d7da; color: #721c24; border-left: 4px solid #dc3545; }
+
+    /* ── Vocabulary Tip ── */
+    .vocab-tip {
+      background: #f0e6ff;
+      border-left: 4px solid #7c3aed;
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 13px;
+      color: #3b0764;
+      margin-top: 12px;
+      display: none;
+    }
+    .vocab-tip.show { display: block; animation: fadeIn 0.3s ease; }
+    .vocab-tip strong { color: #7c3aed; }
+
+    /* ── Next Button ── */
+    .btn-next {
+      display: none;
+      margin-top: 18px;
+      background: linear-gradient(90deg, #1a7fa8, #0d6e8c);
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      padding: 13px 32px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .btn-next:hover { opacity: 0.88; }
+    .btn-next.show  { display: inline-block; animation: fadeIn 0.3s ease; }
+
+    /* ── Score Badge ── */
+    .score-badge {
+      display: inline-block;
+      background: #0d6e8c;
+      color: #fff;
+      font-size: 12px;
+      border-radius: 20px;
+      padding: 3px 12px;
+      margin-left: 10px;
+      vertical-align: middle;
+    }
+
+    /* ── Results Screen ── */
+    .results-screen { text-align: center; padding: 36px 28px; }
+    .results-emoji  { font-size: 72px; margin-bottom: 14px; }
+    .results-screen h2 { font-size: 24px; color: #0d6e8c; margin-bottom: 8px; }
+    .results-screen p  { font-size: 15px; color: #555; margin-bottom: 6px; }
+    .score-display {
+      font-size: 42px;
+      font-weight: 800;
+      color: #1a7fa8;
+      margin: 18px 0;
+    }
+    .score-display span { font-size: 20px; color: #888; font-weight: 400; }
+
+    .stars { font-size: 34px; margin-bottom: 20px; letter-spacing: 4px; }
+
+    .results-summary {
+      background: #e8f6fb;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 22px;
+      text-align: left;
+    }
+    .results-summary h3 { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: #0d6e8c; margin-bottom: 10px; }
+    .summary-item { font-size: 13px; color: #333; padding: 4px 0; border-bottom: 1px solid #cde5f0; }
+    .summary-item:last-child { border-bottom: none; }
+    .summary-item .tag {
+      display: inline-block;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 18px;
+      font-size: 10px;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+    .tag.ok  { background: #28a745; color: #fff; }
+    .tag.bad { background: #dc3545; color: #fff; }
+
+    .btn-restart {
+      background: linear-gradient(90deg, #1a7fa8, #0d6e8c);
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      padding: 13px 36px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .btn-restart:hover { opacity: 0.88; }
+
+    /* ── Start Screen ── */
+    .start-screen { text-align: center; padding: 36px 28px; }
+    .start-screen .big-emoji { font-size: 72px; margin-bottom: 16px; }
+    .start-screen h2 { font-size: 22px; color: #0d6e8c; margin-bottom: 10px; }
+    .start-screen p  { font-size: 14px; color: #555; margin-bottom: 6px; line-height: 1.6; }
+    .objectives {
+      background: #e8f6fb;
+      border-radius: 12px;
+      padding: 16px 20px;
+      text-align: left;
+      margin: 18px 0 22px;
+    }
+    .objectives h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #0d6e8c; margin-bottom: 10px; }
+    .objectives li { font-size: 13px; color: #333; margin-bottom: 6px; padding-left: 4px; }
+    .objectives li::marker { color: #1a7fa8; }
+    .btn-start {
+      background: linear-gradient(90deg, #1a7fa8, #0d6e8c);
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      padding: 14px 40px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .btn-start:hover { opacity: 0.88; }
+  </style>
+</head>
+<body>
+<div class="card">
+
+  <!-- ═══ HEADER ═══ -->
+  <div class="card-header" id="mainHeader">
+    <div class="label">✈ Boarding &amp; Flying · Step 4</div>
+    <h1>Boarding the Plane <span class="score-badge" id="scoreBadge">0 pts</span></h1>
+    <p>Board the plane and find your seat</p>
+    <div class="progress-wrap">
+      <div class="progress-bar" id="progressBar" style="width:0%"></div>
+    </div>
+    <div class="progress-label" id="progressLabel">Scene 0 of 5</div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       SCREEN 0 · START
+  ═══════════════════════════════════════════ -->
+  <div class="screen active start-screen" id="screen-0">
+    <div class="big-emoji">🛫</div>
+    <h2>Ready to Board?</h2>
+    <p>Practice your English for boarding a plane in Australia.<br/>
+       Choose the <strong>best response</strong> in each situation.</p>
+    <div class="objectives">
+      <h3>🎯 What you'll practise</h3>
+      <ul>
+        <li>Showing your boarding pass to staff</li>
+        <li>Asking where your seat is</li>
+        <li>Putting luggage in the overhead bin</li>
+        <li>Talking to the person next to you</li>
+        <li>Understanding flight attendant instructions</li>
+      </ul>
+    </div>
+    <button class="btn-start" onclick="startGame()">Start Boarding →</button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       SCREEN 1 · BOARDING PASS CHECK
+  ═══════════════════════════════════════════ -->
+  <div class="screen" id="screen-1">
+    <div class="scene">
+      <div class="scene-emoji">🎫</div>
+      <div class="scene-text">
+        <h2>Scene 1 · Boarding Pass Check</h2>
+        <p>You're at the gate. A <strong>gate agent</strong> is checking everyone's boarding passes before they get on the plane.</p>
+      </div>
+    </div>
+
+    <div class="dialogue">
+      <div class="speaker">✈ Gate Agent</div>
+      "Good morning! Can I see your boarding pass and passport, please?"
+    </div>
+
+    <p style="font-size:13px;color:#888;margin-bottom:12px;">What do you say?</p>
+
+    <div class="choices" id="choices-1">
+      <button class="choice-btn" onclick="answer(1,'a')">A) "I don't have it. I lost it somewhere."</button>
+      <button class="choice-btn" onclick="answer(1,'b')">B) "Here you go. It's a window seat — Flight QF412."</button>
+      <button class="choice-btn" onclick="answer(1,'c')">C) "Why do you need to see it? I already checked in online."</button>
+      <button class="choice-btn" onclick="answer(1,'d')">D) "Sure, one moment please." <em>(hand over documents)</em></button>
+    </div>
+
+    <div class="feedback" id="feedback-1"></div>
+    <div class="vocab-tip" id="vocab-1">
+      <strong>💡 Vocabulary:</strong>
+      <em>"Here you go"</em> = a polite way to hand something to someone.
+      <em>"One moment please"</em> = asking for a few seconds. Both are very common and natural at airports.
+    </div>
+    <button class="btn-next" id="next-1" onclick="goToScreen(2)">Next Scene →</button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       SCREEN 2 · FINDING YOUR SEAT
+  ═══════════════════════════════════════════ -->
+  <div class="screen" id="screen-2">
+    <div class="scene">
+      <div class="scene-emoji">💺</div>
+      <div class="scene-text">
+        <h2>Scene 2 · Finding Your Seat</h2>
+        <p>You're inside the plane. You can't find seat <strong>24B</strong>. A flight attendant is nearby.</p>
+      </div>
+    </div>
+
+    <div class="dialogue">
+      <div class="speaker">✈ Flight Attendant</div>
+      "Hi there! Can I help you find your seat?"
+    </div>
+
+    <p style="font-size:13px;color:#888;margin-bottom:12px;">What do you say?</p>
+
+    <div class="choices" id="choices-2">
+      <button class="choice-btn" onclick="answer(2,'a')">A) "Yes please! I'm looking for seat 24B — I'm not sure which row that is."</button>
+      <button class="choice-btn" onclick="answer(2,'b')">B) "No, go away. I can find it myself."</button>
+      <button class="choice-btn" onclick="answer(2,'c')">C) "24B, 24B… where is it? This is too confusing!"</button>
+      <button class="choice-btn" onclick="answer(2,'d')">D) "I have seat 24B. I want the window seat, not the middle."</button>
+    </div>
+
+    <div class="feedback" id="feedback-2"></div>
+    <div class="vocab-tip" id="vocab-2">
+      <strong>💡 Vocabulary:</strong>
+      <em>"I'm looking for…"</em> = I am trying to find…
+      Row numbers go front to back (1→back). Seat letters: <strong>A/F = window</strong>, <strong>B/E = middle</strong>, <strong>C/D = aisle</strong>.
+    </div>
+    <button class="btn-next" id="next-2" onclick="goToScreen(3)">Next Scene →</button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       SCREEN 3 · OVERHEAD BIN / LUGGAGE
+  ═══════════════════════════════════════════ -->
+  <div class="screen" id="screen-3">
+    <div class="scene">
+      <div class="scene-emoji">🧳</div>
+      <div class="scene-text">
+        <h2>Scene 3 · Overhead Bin</h2>
+        <p>Your bag is too big to lift alone. The overhead bin above your row is already <strong>full</strong>. A passenger nearby offers to help.</p>
+      </div>
+    </div>
+
+    <div class="dialogue">
+      <div class="speaker">👨 Passenger</div>
+      "Need a hand with that? The bin above us is full, but there's space a few rows back."
+    </div>
+
+    <p style="font-size:13px;color:#888;margin-bottom:12px;">What do you say?</p>
+
+    <div class="choices" id="choices-3">
+      <button class="choice-btn" onclick="answer(3,'a')">A) "I'll just leave it in the aisle — someone will move it."</button>
+      <button class="choice-btn" onclick="answer(3,'b')">B) "Thanks so much! That would be really helpful."</button>
+      <button class="choice-btn" onclick="answer(3,'c')">C) "No thanks. I don't need help from strangers."</button>
+      <button class="choice-btn" onclick="answer(3,'d')">D) "Why is the bin full? This is a bad airline!"</button>
+    </div>
+
+    <div class="feedback" id="feedback-3"></div>
+    <div class="vocab-tip" id="vocab-3">
+      <strong>💡 Vocabulary:</strong>
+      <em>"Need a hand?"</em> = Do you need help? (very common Australian phrase!)
+      <em>"That would be really helpful"</em> = a warm, polite way to accept an offer.
+      <em>Overhead bin</em> = the storage compartment above your seat.
+    </div>
+    <button class="btn-next" id="next-3" onclick="goToScreen(4)">Next Scene →</button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       SCREEN 4 · TALKING TO YOUR NEIGHBOUR
+  ═══════════════════════════════════════════ -->
+  <div class="screen" id="screen-4">
+    <div class="scene">
+      <div class="scene-emoji">🙋</div>
+      <div class="scene-text">
+        <h2>Scene 4 · Your Seat Neighbour</h2>
+        <p>You're in seat <strong>24B (middle)</strong>. The person in the aisle seat <strong>24C</strong> needs to get past you to sit down.</p>
+      </div>
+    </div>
+
+    <div class="dialogue">
+      <div class="speaker">👩 Neighbour</div>
+      "Excuse me, I think that's my seat — 24C, the aisle one."
+    </div>
+
+    <p style="font-size:13px;color:#888;margin-bottom:12px;">What do you say?</p>
+
+    <div class="choices" id="choices-4">
+      <button class="choice-btn" onclick="answer(4,'a')">A) "Of course! Let me get up so you can get through."</button>
+      <button class="choice-btn" onclick="answer(4,'b')">B) "That's MY seat. Check your boarding pass again."</button>
+      <button class="choice-btn" onclick="answer(4,'c')">C) "I don't want to move. Can't you climb over me?"</button>
+      <button class="choice-btn" onclick="answer(4,'d')">D) "Oh sorry, go ahead!" <em>(stand up and let them in)</em></button>
+    </div>
+
+    <div class="feedback" id="feedback-4"></div>
+    <div class="vocab-tip" id="vocab-4">
+      <strong>💡 Vocabulary:</strong>
+      Both <strong>A</strong> and <strong>D</strong> are correct and polite!
+      <em>"Let me get up so you can get through"</em> = very clear and helpful.
+      <em>"Go ahead!"</em> = a quick, friendly way to invite someone to pass.
+      <em>"Excuse me"</em> = used to politely get attention or pass someone.
+    </div>
+    <button class="btn-next" id="next-4" onclick="goToScreen(5)">Next Scene →</button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       SCREEN 5 · FLIGHT ATTENDANT SAFETY
+  ═══════════════════════════════════════════ -->
+  <div class="screen" id="screen-5">
+    <div class="scene">
+      <div class="scene-emoji">🛟</div>
+      <div class="scene-text">
+        <h2>Scene 5 · Safety Instructions</h2>
+        <p>The plane is about to take off. A flight attendant asks everyone to prepare. Your tray table is still <strong>down</strong>.</p>
+      </div>
+    </div>
+
+    <div class="dialogue">
+      <div class="speaker">✈ Flight Attendant</div>
+      "Could you please fold your tray table up and make sure your seat belt is fastened? We're about to take off."
+    </div>
+
+    <p style="font-size:13px;color:#888;margin-bottom:12px;">What do you say?</p>
+
+    <div class="choices" id="choices-5">
+      <button class="choice-btn" onclick="answer(5,'a')">A) "Of course, sorry about that!" <em>(folds table up, clicks seatbelt)</em></button>
+      <button class="choice-btn" onclick="answer(5,'b')">B) "I'll do it after take-off — it's fine."</button>
+      <button class="choice-btn" onclick="answer(5,'c')">C) "Sure thing!" <em>(folds table, checks seatbelt)</em></button>
+      <button class="choice-btn" onclick="answer(5,'d')">D) "Why do I have to? It doesn't affect anyone."</button>
+    </div>
+
+    <div class="feedback" id="feedback-5"></div>
+    <div class="vocab-tip" id="vocab-5">
+      <strong>💡 Vocabulary:</strong>
+      Both <strong>A</strong> and <strong>C</strong> are correct!
+      <em>"Sure thing!"</em> = Yes, absolutely! (very Australian/casual 🇦🇺)
+      <em>"Of course, sorry about that"</em> = polite and apologetic.
+      <em>Tray table</em> = the small fold-down table in front of you.
+      <em>Fasten your seatbelt</em> = click/lock your seatbelt.
+    </div>
+    <button class="btn-next" id="next-5" onclick="showResults()">See My Results 🏆</button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       SCREEN 6 · RESULTS
+  ═══════════════════════════════════════════ -->
+  <div class="screen results-screen" id="screen-6">
+    <div class="results-emoji" id="resultsEmoji">🏆</div>
+    <h2 id="resultsTitle">Well done!</h2>
+    <p id="resultsMessage">You successfully boarded the plane!</p>
+    <div class="score-display">
+      <span id="finalScore">0</span><span> / 5</span>
+    </div>
+    <div class="stars" id="starsDisplay">⭐⭐⭐⭐⭐</div>
+
+    <div class="results-summary" id="summaryList">
+      <h3>📋 Your Answers</h3>
+    </div>
+
+    <p style="font-size:13px;color:#888;margin-bottom:20px;">
+      Keep practising to improve your airport English! 🇦🇺
+    </p>
+    <button class="btn-restart" onclick="restartGame()">Play Again 🔄</button>
+  </div>
+
+</div><!-- /card -->
+
+<script>
+  // ── Game State ──────────────────────────────────
+  let score = 0;
+  let currentScreen = 0;
+  const answers = {};   // { sceneNum: 'correct' | 'wrong' }
+
+  // ── Correct answers ─────────────────────────────
+  // Scene 1: D (or B also acceptable)
+  // Scene 2: A
+  // Scene 3: B
+  // Scene 4: A or D
+  // Scene 5: A or C
+  const correctAnswers = {
+    1: ['b','d'],
+    2: ['a'],
+    3: ['b'],
+    4: ['a','d'],
+    5: ['a','c']
+  };
+
+  const feedbackText = {
+    1: {
+      correct: "✅ Great job! Handing over your documents politely — and mentioning your flight — shows you're organised and friendly.",
+      wrong:   "❌ That could cause delays or frustration. Always have your boarding pass and passport ready before reaching the gate!"
+    },
+    2: {
+      correct: "✅ Perfect! Politely asking for help with your seat number is exactly what flight attendants are there for.",
+      wrong:   "❌ Try to stay calm and polite when asking for help. Flight attendants love helping passengers who ask nicely!"
+    },
+    3: {
+      correct: "✅ Excellent! Accepting help graciously makes the boarding process smoother for everyone.",
+      wrong:   "❌ Blocking the aisle or complaining creates problems. It's always better to accept help or ask politely."
+    },
+    4: {
+      correct: "✅ Well done! Being considerate of other passengers makes the flight more comfortable for everyone.",
+      wrong:   "❌ Always be polite to your seat neighbours — you'll be sitting next to them for the whole flight!"
+    },
+    5: {
+      correct: "✅ Perfect! Following crew instructions quickly and politely is important for everyone's safety.",
+      wrong:   "❌ Safety instructions must be followed immediately. The crew asks for a reason — passenger safety comes first!"
+    }
+  };
+
+  const sceneTitles = [
+    "Boarding Pass Check",
+    "Finding Your Seat",
+    "Overhead Bin",
+    "Seat Neighbour",
+    "Safety Instructions"
+  ];
+
+  // ── Functions ───────────────────────────────────
+  function startGame() {
+    score = 0;
+    Object.keys(answers).forEach(k => delete answers[k]);
+    updateHeader(1, 5);
+    goToScreen(1);
+  }
+
+  function goToScreen(n) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-' + n).classList.add('active');
+    currentScreen = n;
+    if (n >= 1 && n <= 5) updateHeader(n, 5);
+  }
+
+  function updateHeader(current, total) {
+    document.getElementById('progressBar').style.width = ((current - 1) / total * 100) + '%';
+    document.getElementById('progressLabel').textContent = 'Scene ' + (current) + ' of ' + total;
+    document.getElementById('scoreBadge').textContent = score + ' pts';
+  }
+
+  function answer(scene, choice) {
+    const btns = document.querySelectorAll('#choices-' + scene + ' .choice-btn');
+    const fb   = document.getElementById('feedback-' + scene);
+    const vt   = document.getElementById('vocab-' + scene);
+    const next = document.getElementById('next-' + scene);
+
+    // Disable all buttons
+    btns.forEach(b => b.disabled = true);
+
+    const isCorrect = correctAnswers[scene].includes(choice);
+
+    // Highlight chosen button
+    const chosenBtn = document.querySelectorAll('#choices-' + scene + ' .choice-btn')[
+      ['a','b','c','d'].indexOf(choice)
+    ];
+    chosenBtn.classList.add(isCorrect ? 'correct' : 'wrong');
+
+    // If wrong, also highlight a correct answer
+    if (!isCorrect) {
+      const correctIdx = ['a','b','c','d'].indexOf(correctAnswers[scene][0]);
+      btns[correctIdx].classList.add('correct');
+    }
+
+    // Feedback
+    fb.textContent = isCorrect
+      ? feedbackText[scene].correct
+      : feedbackText[scene].wrong;
+    fb.className = 'feedback show ' + (isCorrect ? 'good' : 'bad');
+
+    // Vocab tip
+    vt.classList.add('show');
+
+    // Score
+    if (isCorrect) {
+      score++;
+      answers[scene] = 'correct';
+    } else {
+      answers[scene] = 'wrong';
+    }
+
+    document.getElementById('scoreBadge').textContent = score + ' pts';
+
+    // Show next button
+    next.classList.add('show');
+  }
+
+  function showResults() {
+    goToScreen(6);
+    document.getElementById('finalScore').textContent = score;
+
+    // Stars
+    let stars = '';
+    if (score === 5)      stars = '⭐⭐⭐⭐⭐';
+    else if (score === 4) stars = '⭐⭐⭐⭐';
+    else if (score === 3) stars = '⭐⭐⭐';
+    else if (score === 2) stars = '⭐⭐';
+    else                  stars = '⭐';
+    document.getElementById('starsDisplay').textContent = stars;
+
+    // Emoji & title
+    let emoji, title, msg;
+    if (score === 5) {
+      emoji = '🏆'; title = 'Perfect Score!'; msg = 'You\'re ready to board any plane in Australia! 🇦🇺';
+    } else if (score >= 3) {
+      emoji = '😊'; title = 'Well Done!'; msg = 'Good English skills! Keep practising the tricky ones.';
+    } else {
+      emoji = '📚'; title = 'Keep Practising!'; msg = 'Review the vocabulary tips and try again!';
+    }
+    document.getElementById('resultsEmoji').textContent = emoji;
+    document.getElementById('resultsTitle').textContent = title;
+    document.getElementById('resultsMessage').textContent = msg;
+
+    // Summary list
+    const summary = document.getElementById('summaryList');
+    summary.innerHTML = '<h3>📋 Your Answers</h3>';
+    for (let i = 1; i <= 5; i++) {
+      const result = answers[i] || 'wrong';
+      const div = document.createElement('div');
+      div.className = 'summary-item';
+      div.innerHTML = `<span class="tag ${result === 'correct' ? 'ok' : 'bad'}">${result === 'correct' ? '✓' : '✗'}</span> Scene ${i}: ${sceneTitles[i-1]}`;
+      summary.appendChild(div);
+    }
+
+    // Update progress to 100%
+    document.getElementById('progressBar').style.width = '100%';
+    document.getElementById('progressLabel').textContent = 'Completed!';
+  }
+
+  function restartGame() {
+    // Reset all choice buttons & feedback
+    for (let i = 1; i <= 5; i++) {
+      const btns = document.querySelectorAll('#choices-' + i + ' .choice-btn');
+      btns.forEach(b => {
+        b.disabled = false;
+        b.className = 'choice-btn';
+      });
+      document.getElementById('feedback-' + i).className = 'feedback';
+      document.getElementById('vocab-' + i).className = 'vocab-tip';
+      document.getElementById('next-' + i).className = 'btn-next';
+    }
+    startGame();
+  }
+</script>
+</body>
+</html>
