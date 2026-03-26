@@ -193,7 +193,7 @@
     .role-header {
       color: white;
       padding: 16px 18px;
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 700;
       text-align: center;
     }
@@ -209,7 +209,7 @@
     .role-body {
       padding: 18px;
       background: #f8fbfd;
-      min-height: 470px;
+      min-height: 400px;
     }
 
     .info-card, .input-card {
@@ -218,12 +218,22 @@
       margin-bottom: 14px;
     }
 
-    .role-a .info-card, .role-a .input-card {
+    .role-a .info-card {
       background: #eef9f1;
       border-left: 5px solid #2fb35f;
     }
 
-    .role-b .info-card, .role-b .input-card {
+    .role-a .input-card {
+      background: #eef9f1;
+      border-left: 5px solid #2fb35f;
+    }
+
+    .role-b .info-card {
+      background: #fff5f3;
+      border-left: 5px solid #ef6b5b;
+    }
+
+    .role-b .input-card {
       background: #fff5f3;
       border-left: 5px solid #ef6b5b;
     }
@@ -257,6 +267,7 @@
 
     .answer-input:focus {
       border-color: #1a7fa8;
+      background: #f0f8fb;
     }
 
     .answer-input.correct {
@@ -282,7 +293,7 @@
 
     .controls {
       text-align: center;
-      margin-top: 22px;
+      margin-top: 24px;
     }
 
     .btn-check, .btn-next, .btn-restart {
@@ -292,7 +303,7 @@
       font-size: 15px;
       font-weight: 600;
       cursor: pointer;
-      margin: 6px;
+      margin: 8px 4px;
       transition: opacity 0.2s;
     }
 
@@ -412,18 +423,15 @@
       .role-body {
         min-height: auto;
       }
-      .card-header h1 {
-        font-size: 21px;
-      }
     }
   </style>
 </head>
 <body>
   <div class="card">
     <div class="card-header">
-      <div class="label">✈ Boarding & Flying · Step 4</div>
-      <h1>Boarding the Plane – Roleplay Version</h1>
-      <p>Split-screen speaking activity with 5 scenarios</p>
+      <div class="label">✈ Boarding & Flying · Roleplay</div>
+      <h1>Boarding the Plane</h1>
+      <p>5 Split-Screen Speaking Scenarios</p>
       <div class="progress-wrap">
         <div class="progress-bar" id="progressBar"></div>
       </div>
@@ -435,7 +443,7 @@
       <div class="intro-emoji">🛫</div>
       <h2>Ready to Board?</h2>
       <p>This version is made for <strong>2 students</strong>.</p>
-      <p>Put a <strong>piece of paper in the middle</strong> so Student A cannot see Student B’s side.</p>
+      <p>Put a <strong>piece of paper in the middle</strong> of the screen so Student A cannot see Student B's side.</p>
 
       <div class="intro-box">
         <h3>How to play</h3>
@@ -444,7 +452,7 @@
           <li>They must ask and answer questions to complete the missing details.</li>
           <li>Type the missing answers in the input boxes.</li>
           <li>Click <strong>Check Answers</strong> to see if they are correct.</li>
-          <li>There are <strong>5 scenarios</strong>.</li>
+          <li>There are <strong>5 scenarios</strong> to complete.</li>
         </ul>
       </div>
 
@@ -488,9 +496,9 @@
 
             <div class="teacher-tip">
               <strong>Suggested language:</strong><br>
-              “Can I see your boarding pass and passport, please?”<br>
-              “Your gate is B15.”<br>
-              “Your seat is 24B.”
+              "Can I see your boarding pass and passport, please?"<br>
+              "Your gate is B15."<br>
+              "Your seat is 24B."
             </div>
           </div>
         </div>
@@ -544,5 +552,422 @@
         </div>
       </div>
 
-      <div class
-        
+      <div class="roleplay-grid">
+        <div class="role-panel role-a">
+          <div class="role-header">👨‍✈️ Flight Attendant (Student A)</div>
+          <div class="role-body">
+            <div class="info-card">
+              <div class="card-label">Seat Number</div>
+              <div class="card-value">24B</div>
+            </div>
+            <div class="info-card">
+              <div class="card-label">Row Location</div>
+              <div class="card-value">Row 24 is in the middle of the plane</div>
+            </div>
+            <div class="info-card">
+              <div class="card-label">Seat Type</div>
+              <div class="card-value">B = middle seat</div>
+            </div>
+            <div class="info-card">
+              <div class="card-label">Overhead Bin</div>
+              <div class="card-value">Use the bin above row 24</div>
+            </div>
+
+            <div class="teacher-tip">
+              <strong>Suggested language:</strong><br>
+              "Can I help you find your seat?"<br>
+              "What is your seat number?"<br>
+              "24B is the middle seat in row 24."
+            </div>
+          </div>
+        </div>
+
+        <div class="role-panel role-b">
+          <div class="role-header">🧍 Passenger (Student B)</div>
+          <div class="role-body">
+            <div class="info-card">
+              <div class="card-label">Seat Number</div>
+              <div class="card-value">24B</div>
+            </div>
+            <div class="info-card">
+              <div class="card-label">Carry-on Bag</div>
+              <div class="card-value">One small backpack</div>
+            </div>
+
+            <div class="input-card">
+              <div class="card-label">Which row?</div>
+              <input class="answer-input" data-answer="row 24" id="s2q1" placeholder="Type your answer...">
+            </div>
+            <div class="input-card">
+              <div class="card-label">Seat type (A/B/C)?</div>
+              <input class="answer-input" data-answer="middle seat" id="s2q2" placeholder="Type your answer...">
+            </div>
+            <div class="input-card">
+              <div class="card-label">Where to put the bag?</div>
+              <input class="answer-input" data-answer="overhead bin above row 24" id="s2q3" placeholder="Type your answer...">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="btn-check" onclick="checkScenario(2)">Check Answers</button>
+        <button class="btn-next" id="next-2" onclick="goToScreen(3)">Next Scenario →</button>
+        <div class="feedback" id="feedback-2"></div>
+      </div>
+    </div>
+
+    <!-- SCENARIO 3 -->
+    <div class="screen" id="screen-3">
+      <div class="scene-top">
+        <div class="scene-emoji">🧳</div>
+        <div class="scene-text">
+          <h2>Scenario 3: Overhead Bin is Full</h2>
+          <p>The overhead bin is full. A flight attendant helps find another place for the bag.</p>
+        </div>
+      </div>
+
+      <div class="roleplay-grid">
+        <div class="role-panel role-a">
+          <div class="role-header">👩‍✈️ Flight Attendant (Student A)</div>
+          <div class="role-body">
+            <div class="info-card">
+              <div class="card-label">Problem</div>
+              <div class="card-value">The bin above row 24 is full</div>
+            </div>
+            <div class="info-card">
+              <div class="card-label">Available Space</div>
+              <div class="card-value">There is space above row 27</div>
+            </div>
+            <div class="info-card">
+              <div class="card-label">Small Items</div>
+              <div class="card-value">Put small bags under the seat</div>
+            </div>
+
+            <div class="teacher-tip">
+              <strong>Suggested language:</strong><br>
+              "Is there space for my bag?"<br>
+              "The bin above your seat is full."<br>
+              "You can put your bag above row 27."
+            </div>
+          </div>
+        </div>
+
+        <div class="role-panel role-b">
+          <div class="role-header">🧍 Passenger (Student B)</div>
+          <div class="role-body">
+            <div class="info-card">
+              <div class="card-label">Luggage</div>
+              <div class="card-value">1 carry-on suitcase + 1 handbag</div>
+            </div>
+
+            <div class="input-card">
+              <div class="card-label">Why can't I use the bin above row 24?</div>
+              <input class="answer-input" data-answer="it is full" id="s3q1" placeholder="Type your answer...">
+            </div>
+            <div class="input-card">
+              <div class="card-label">Where can I put the suitcase?</div>
+              <input class="answer-input" data-answer="above row 27" id="s3q2" placeholder="Type your answer...">
+            </div>
+            <div class="input-card">
+              <div class="card-label">Where can I put the handbag?</div>
+              <input class="answer-input" data-answer="under the seat" id="s3q3" placeholder="Type your answer...">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="btn-check" onclick="checkScenario(3)">Check Answers</button>
+        <button class="btn-next" id="next-3" onclick="goToScreen(4)">Next Scenario →</button>
+        <div class="feedback" id="feedback-3"></div>
+      </div>
+    </div>
+
+    <!-- SCENARIO 4 -->
+    <div class="screen" id="screen-4">
+      <div class="scene-top">
+        <div class="scene-emoji">🙋</div>
+        <div class="scene-text">
+          <h2>Scenario 4: Excuse Me, That's My Seat</h2>
+          <p>Two passengers talk to each other before sitting down.</p>
+        </div>
+      </div>
+
+      <div class="roleplay-grid">
+        <div class="role-panel role-a">
+          <div class="role-header">🧍 Passenger in 24C (Student A)</div>
+          <div class="role-body">
+            <div class="info-card">
+              <div class="card-label">Your Seat</div>
+              <div class="card-value">24C</div>
+            </div>
+            <div class="info-card">
+              <div class="card-label">Seat Type</div>
+              <div class="card-value">Aisle seat</div>
+            </div>
+            <div class="info-card">
+              <div class="card-label">What You Need</div>
+              <div class="card-value">The person in 24B must stand up so you can get in</div>
+            </div>
+
+            <div class="teacher-tip">
+              <strong>Suggested language:</strong><br>
+              "Excuse me, I think that's my seat."<br>
+              "I'm in 24C."<br>
+              "Could you let me get through, please?"
+            </div>
+          </div>
+        </div>
+
+        <div class="role-panel role-b">
+          <div class="role-header">🧍 Passenger in 24B (Student B)</div>
+          <div class="role-body">
+            <div class="info-card">
+              <div class="card-label">Your Seat</div>
+              <div class="card-value">24B</div>
+            </div>
+
+            <div class="input-card">
+              <div class="card-label">What seat is Student A in?</div>
+              <input class="answer-input" data-answer="24c" id="s4q1" placeholder="Type your answer...">
+            </div>
+            <div class="input-card">
+              <div class="card-label">What type is seat 24C?</div>
+              <input class="answer-input" data-answer="aisle seat" id="s4q2" placeholder="Type your answer...">
+            </div>
+            <div class="input-card">
+              <div class="card-label">What should you do?</div>
+              <input class="answer-input" data-answer="stand up" id="s4q3" placeholder="Type your answer...">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="btn-check" onclick="checkScenario(4)">Check Answers</button>
+        <button class="btn-next" id="next-4" onclick="goToScreen(5)">Next Scenario →</button>
+        <div class="feedback" id="feedback-4"></div>
+      </div>
+    </div>
+
+    <!-- SCENARIO 5 -->
+    <div class="screen" id="screen-5">
+      <div class="scene-top">
+        <div class="scene-emoji">🛫</div>
+        <div class="scene-text">
+          <h2>Scenario 5: Before Take-off</h2>
+          <p>The flight attendant gives safety instructions before the plane leaves.</p>
+        </div>
+      </div>
+
+      <div class="roleplay-grid">
+        <div class="role-panel role-a">
+          <div class="role-header">👨‍✈️ Flight Attendant (Student A)</div>
+          <div class="role-body">
+            <div class="info-card">
+              <div class="card-label">Instruction 1</div>
+              <div class="card-value">Fasten your seatbelt</div>
+            </div>
+            <div class="info-card">
+              <div class="card-label">Instruction 2</div>
+              <div class="card-value">Put your tray table up</div>
+            </div>
+            <div class="info-card">
+              <div class="card-label">Instruction 3</div>
+              <div class="card-value">Put your seat in the upright position</div>
+            </div>
+            <div class="info-card">
+              <div class="card-label">Instruction 4</div>
+              <div class="card-value">Put your phone on airplane mode</div>
+            </div>
+
+            <div class="teacher-tip">
+              <strong>Suggested language:</strong><br>
+              "Please fasten your seatbelt."<br>
+              "Could you put your tray table up?"<br>
+              "Please put your phone on airplane mode."
+            </div>
+          </div>
+        </div>
+
+        <div class="role-panel role-b">
+          <div class="role-header">🧍 Passenger (Student B)</div>
+          <div class="role-body">
+            <div class="info-card">
+              <div class="card-label">Situation</div>
+              <div class="card-value">Tray table is down, phone is not ready</div>
+            </div>
+
+            <div class="input-card">
+              <div class="card-label">What must you fasten?</div>
+              <input class="answer-input" data-answer="seatbelt" id="s5q1" placeholder="Type your answer...">
+            </div>
+            <div class="input-card">
+              <div class="card-label">What must you do with the tray table?</div>
+              <input class="answer-input" data-answer="put it up" id="s5q2" placeholder="Type your answer...">
+            </div>
+            <div class="input-card">
+              <div class="card-label">What mode for your phone?</div>
+              <input class="answer-input" data-answer="airplane mode" id="s5q3" placeholder="Type your answer...">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="btn-check" onclick="checkScenario(5)">Check Answers</button>
+        <button class="btn-next" id="next-5" onclick="showResults()">See Results →</button>
+        <div class="feedback" id="feedback-5"></div>
+      </div>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="screen results-screen" id="screen-6">
+      <div class="results-emoji">🏆</div>
+      <h2>You Did It!</h2>
+      <p>You completed all 5 boarding scenarios.</p>
+      <div class="score-display"><span id="finalScore">0</span> / 15</div>
+      <div class="stars" id="stars">⭐⭐⭐</div>
+
+      <div class="summary-box" id="summaryBox">
+        <h3>Scenario Results</h3>
+      </div>
+
+      <button class="btn-main" onclick="restartGame()">Play Again</button>
+    </div>
+
+  </div><!-- end card -->
+
+  <script>
+    let currentScreen = 0;
+    let totalScore = 0;
+    let scenarioScores = { 1:0, 2:0, 3:0, 4:0, 5:0 };
+    let checkedScenarios = {};
+
+    function normalizeAnswer(text) {
+      return text.toLowerCase().trim().replace(/\s+/g, ' ').replace(/[.,!?;:]/g, '');
+    }
+
+    function startGame() {
+      document.getElementById('screen-0').classList.remove('active');
+      document.getElementById('screen-1').classList.add('active');
+      currentScreen = 1;
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const percent = (currentScreen / 5) * 100;
+      document.getElementById('progressBar').style.width = percent + '%';
+      document.getElementById('progressLabel').textContent = 'Scenario ' + currentScreen + ' of 5';
+    }
+
+    function checkScenario(num) {
+      const scenario = document.getElementById('screen-' + num);
+      const inputs = scenario.querySelectorAll('.answer-input');
+      let correct = 0;
+
+      inputs.forEach(input => {
+        const userAnswer = normalizeAnswer(input.value);
+        const correctAnswer = normalizeAnswer(input.dataset.answer);
+
+        input.classList.remove('correct', 'wrong');
+
+        if (userAnswer === correctAnswer || userAnswer.includes(correctAnswer) || correctAnswer.includes(userAnswer)) {
+          input.classList.add('correct');
+          correct++;
+        } else {
+          input.classList.add('wrong');
+        }
+      });
+
+      // Update score
+      if (checkedScenarios[num]) {
+        totalScore -= scenarioScores[num];
+      }
+      scenarioScores[num] = correct;
+      totalScore += correct;
+      checkedScenarios[num] = true;
+
+      // Show feedback
+      const feedback = document.getElementById('feedback-' + num);
+      const nextBtn = document.getElementById('next-' + num);
+
+      if (correct === inputs.length) {
+        feedback.innerHTML = '✅ Perfect! All answers are correct!';
+        feedback.className = 'feedback good';
+      } else {
+        feedback.innerHTML = '❌ ' + correct + ' out of ' + inputs.length + ' correct. Check the highlighted answers again.';
+        feedback.className = 'feedback bad';
+      }
+
+      nextBtn.style.display = 'inline-block';
+    }
+
+    function goToScreen(num) {
+      document.getElementById('screen-' + currentScreen).classList.remove('active');
+      currentScreen = num;
+      document.getElementById('screen-' + num).classList.add('active');
+      updateProgress();
+      window.scrollTo(0, 0);
+    }
+
+    function showResults() {
+      document.getElementById('screen-' + currentScreen).classList.remove('active');
+      document.getElementById('screen-6').classList.add('active');
+      document.getElementById('progressBar').style.width = '100%';
+      document.getElementById('progressLabel').textContent = 'Completed!';
+
+      document.getElementById('finalScore').textContent = totalScore;
+
+      // Stars
+      let stars = '⭐';
+      if (totalScore >= 14) stars = '⭐⭐⭐⭐⭐';
+      else if (totalScore >= 11) stars = '⭐⭐⭐⭐';
+      else if (totalScore >= 8) stars = '⭐⭐⭐';
+      else if (totalScore >= 5) stars = '⭐⭐';
+
+      document.getElementById('stars').textContent = stars;
+
+      // Summary
+      const summary = document.getElementById('summaryBox');
+      summary.innerHTML = '<h3>Scenario Results</h3>';
+      for (let i = 1; i <= 5; i++) {
+        const item = document.createElement('div');
+        item.className = 'summary-item';
+        item.textContent = 'Scenario ' + i + ': ' + scenarioScores[i] + ' / 3 correct';
+        summary.appendChild(item);
+      }
+    }
+
+    function restartGame() {
+      currentScreen = 0;
+      totalScore = 0;
+      scenarioScores = { 1:0, 2:0, 3:0, 4:0, 5:0 };
+      checkedScenarios = {};
+
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById('screen-0').classList.add('active');
+
+      document.querySelectorAll('.answer-input').forEach(input => {
+        input.value = '';
+        input.classList.remove('correct', 'wrong');
+      });
+
+      document.querySelectorAll('.feedback').forEach(fb => {
+        fb.className = 'feedback';
+        fb.textContent = '';
+      });
+
+      document.querySelectorAll('.btn-next').forEach(btn => {
+        btn.style.display = 'none';
+      });
+
+      document.getElementById('progressBar').style.width = '0%';
+      document.getElementById('progressLabel').textContent = 'Ready to start';
+
+      window.scrollTo(0, 0);
+    }
+  </script>
+</body>
+</html>
