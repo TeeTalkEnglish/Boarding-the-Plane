@@ -349,13 +349,13 @@
 
     .explanation-box {
       display: none;
-      margin: 14px auto 0;
+      margin: 18px auto 0;
       max-width: 920px;
       background: #f0e6ff;
       color: #3b0764;
       border-left: 4px solid #7c3aed;
-      border-radius: 12px;
-      padding: 14px 16px;
+      border-radius: 14px;
+      padding: 18px;
       font-size: 14px;
       line-height: 1.7;
       text-align: left;
@@ -367,6 +367,77 @@
 
     .explanation-box strong {
       color: #6d28d9;
+    }
+
+    .visual-tip-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 10px;
+      margin: 12px 0;
+    }
+
+    .mini-tip-card {
+      background: rgba(255,255,255,0.75);
+      border: 1px solid rgba(124,58,237,0.18);
+      border-radius: 12px;
+      padding: 12px 10px;
+      text-align: center;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .seat-map {
+      margin: 12px 0;
+      background: rgba(255,255,255,0.78);
+      border-radius: 12px;
+      padding: 14px;
+      border: 1px solid rgba(124,58,237,0.15);
+      font-size: 14px;
+      color: #3b0764;
+    }
+
+    .seat-row {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .seat-box {
+      min-width: 62px;
+      padding: 10px 8px;
+      border-radius: 10px;
+      text-align: center;
+      font-weight: 700;
+      background: #ffffff;
+      border: 1px solid #d8c8ff;
+    }
+
+    .seat-box.window { background: #dbeafe; }
+    .seat-box.middle { background: #fef3c7; }
+    .seat-box.aisle  { background: #dcfce7; }
+    .seat-box.highlight { outline: 3px solid #7c3aed; }
+
+    .arrow-note {
+      text-align: center;
+      font-size: 13px;
+      margin-top: 8px;
+      color: #6d28d9;
+      font-weight: 600;
+    }
+
+    .checklist {
+      margin: 12px 0;
+      background: rgba(255,255,255,0.78);
+      border-radius: 12px;
+      padding: 12px 14px;
+      border: 1px solid rgba(124,58,237,0.15);
+    }
+
+    .checklist-item {
+      padding: 6px 0;
+      font-size: 14px;
     }
 
     .results-screen {
@@ -460,7 +531,6 @@
       <div class="progress-label" id="progressLabel">Ready to start</div>
     </div>
 
-    <!-- INTRO -->
     <div class="screen active intro-screen" id="screen-0">
       <div class="intro-emoji">🛫</div>
       <h2>Ready to Board?</h2>
@@ -474,8 +544,8 @@
           <li>They must ask and answer questions to complete the missing details.</li>
           <li>Type the missing answers in the input boxes.</li>
           <li>Click <strong>Check Answers</strong> to check the scenario.</li>
-          <li>Use <strong>Redo Scenario</strong> if you want to try again.</li>
-          <li>After checking, read the explanation box at the bottom.</li>
+          <li>Use <strong>Redo Scenario</strong> to clear the current scenario and try again.</li>
+          <li>After checking, read the visual explanation box at the bottom.</li>
         </ul>
       </div>
 
@@ -521,15 +591,15 @@
 
             <div class="input-card">
               <div class="card-label">Gate</div>
-              <input class="answer-input" data-answer="b15" id="s1q1" placeholder="Type the missing information...">
+              <input class="answer-input" data-answer="b15|gate b15" id="s1q1" placeholder="Type the missing information...">
             </div>
             <div class="input-card">
               <div class="card-label">Seat</div>
-              <input class="answer-input" data-answer="24b" id="s1q2" placeholder="Type the missing information...">
+              <input class="answer-input" data-answer="24b|seat 24b" id="s1q2" placeholder="Type the missing information...">
             </div>
             <div class="input-card">
               <div class="card-label">Boarding Group</div>
-              <input class="answer-input" data-answer="group 3" id="s1q3" placeholder="Type the missing information...">
+              <input class="answer-input" data-answer="group 3|3" id="s1q3" placeholder="Type the missing information...">
             </div>
 
             <div class="teacher-tip">
@@ -544,8 +614,8 @@
       </div>
 
       <div class="controls">
-        <button class="btn-check" onclick="checkScenario(1)">Check Answers</button>
         <button class="btn-redo" onclick="redoScenario(1)">Redo Scenario ↺</button>
+        <button class="btn-check" onclick="checkScenario(1)">Check Answers</button>
         <button class="btn-next" id="next-1" onclick="goToScreen(2)">Next Scenario →</button>
         <div class="feedback" id="feedback-1"></div>
         <div class="explanation-box" id="explanation-1"></div>
@@ -589,15 +659,15 @@
 
             <div class="input-card">
               <div class="card-label">Row</div>
-              <input class="answer-input" data-answer="row 24" id="s2q1" placeholder="Type the missing information...">
+              <input class="answer-input" data-answer="row 24|24" id="s2q1" placeholder="Type the missing information...">
             </div>
             <div class="input-card">
               <div class="card-label">Seat Type</div>
-              <input class="answer-input" data-answer="middle seat" id="s2q2" placeholder="Type the missing information...">
+              <input class="answer-input" data-answer="middle seat|middle" id="s2q2" placeholder="Type the missing information...">
             </div>
             <div class="input-card">
               <div class="card-label">Bag Location</div>
-              <input class="answer-input" data-answer="bin above row 24" id="s2q3" placeholder="Type the missing information...">
+              <input class="answer-input" data-answer="bin above row 24|overhead bin above row 24|above row 24" id="s2q3" placeholder="Type the missing information...">
             </div>
 
             <div class="teacher-tip">
@@ -612,8 +682,8 @@
       </div>
 
       <div class="controls">
-        <button class="btn-check" onclick="checkScenario(2)">Check Answers</button>
         <button class="btn-redo" onclick="redoScenario(2)">Redo Scenario ↺</button>
+        <button class="btn-check" onclick="checkScenario(2)">Check Answers</button>
         <button class="btn-next" id="next-2" onclick="goToScreen(3)">Next Scenario →</button>
         <div class="feedback" id="feedback-2"></div>
         <div class="explanation-box" id="explanation-2"></div>
@@ -654,15 +724,15 @@
 
             <div class="input-card">
               <div class="card-label">Bin Problem</div>
-              <input class="answer-input" data-answer="it is full" id="s3q1" placeholder="Type the missing information...">
+              <input class="answer-input" data-answer="it is full|full" id="s3q1" placeholder="Type the missing information...">
             </div>
             <div class="input-card">
               <div class="card-label">Suitcase Location</div>
-              <input class="answer-input" data-answer="above row 27" id="s3q2" placeholder="Type the missing information...">
+              <input class="answer-input" data-answer="above row 27|row 27" id="s3q2" placeholder="Type the missing information...">
             </div>
             <div class="input-card">
               <div class="card-label">Handbag Location</div>
-              <input class="answer-input" data-answer="under the seat" id="s3q3" placeholder="Type the missing information...">
+              <input class="answer-input" data-answer="under the seat|under seat" id="s3q3" placeholder="Type the missing information...">
             </div>
 
             <div class="teacher-tip">
@@ -677,8 +747,8 @@
       </div>
 
       <div class="controls">
-        <button class="btn-check" onclick="checkScenario(3)">Check Answers</button>
         <button class="btn-redo" onclick="redoScenario(3)">Redo Scenario ↺</button>
+        <button class="btn-check" onclick="checkScenario(3)">Check Answers</button>
         <button class="btn-next" id="next-3" onclick="goToScreen(4)">Next Scenario →</button>
         <div class="feedback" id="feedback-3"></div>
         <div class="explanation-box" id="explanation-3"></div>
@@ -719,15 +789,15 @@
 
             <div class="input-card">
               <div class="card-label">Other Passenger's Seat</div>
-              <input class="answer-input" data-answer="24c" id="s4q1" placeholder="Type the missing information...">
+              <input class="answer-input" data-answer="24c|seat 24c" id="s4q1" placeholder="Type the missing information...">
             </div>
             <div class="input-card">
               <div class="card-label">Seat Type</div>
-              <input class="answer-input" data-answer="aisle seat" id="s4q2" placeholder="Type the missing information...">
+              <input class="answer-input" data-answer="aisle seat|aisle" id="s4q2" placeholder="Type the missing information...">
             </div>
             <div class="input-card">
               <div class="card-label">What You Should Do</div>
-              <input class="answer-input" data-answer="stand up" id="s4q3" placeholder="Type the missing information...">
+              <input class="answer-input" data-answer="stand up|get up|let them through" id="s4q3" placeholder="Type the missing information...">
             </div>
 
             <div class="teacher-tip">
@@ -742,8 +812,8 @@
       </div>
 
       <div class="controls">
-        <button class="btn-check" onclick="checkScenario(4)">Check Answers</button>
         <button class="btn-redo" onclick="redoScenario(4)">Redo Scenario ↺</button>
+        <button class="btn-check" onclick="checkScenario(4)">Check Answers</button>
         <button class="btn-next" id="next-4" onclick="goToScreen(5)">Next Scenario →</button>
         <div class="feedback" id="feedback-4"></div>
         <div class="explanation-box" id="explanation-4"></div>
@@ -786,15 +856,15 @@
 
             <div class="input-card">
               <div class="card-label">Safety Item</div>
-              <input class="answer-input" data-answer="seatbelt" id="s5q1" placeholder="Type the missing information...">
+              <input class="answer-input" data-answer="seatbelt|seat belt" id="s5q1" placeholder="Type the missing information...">
             </div>
             <div class="input-card">
               <div class="card-label">Tray Table Action</div>
-              <input class="answer-input" data-answer="put it up" id="s5q2" placeholder="Type the missing information...">
+              <input class="answer-input" data-answer="put it up|put up the tray table|tray table up" id="s5q2" placeholder="Type the missing information...">
             </div>
             <div class="input-card">
               <div class="card-label">Phone Setting</div>
-              <input class="answer-input" data-answer="airplane mode" id="s5q3" placeholder="Type the missing information...">
+              <input class="answer-input" data-answer="airplane mode|flight mode" id="s5q3" placeholder="Type the missing information...">
             </div>
 
             <div class="teacher-tip">
@@ -809,8 +879,8 @@
       </div>
 
       <div class="controls">
-        <button class="btn-check" onclick="checkScenario(5)">Check Answers</button>
         <button class="btn-redo" onclick="redoScenario(5)">Redo Scenario ↺</button>
+        <button class="btn-check" onclick="checkScenario(5)">Check Answers</button>
         <button class="btn-next" id="next-5" onclick="showResults()">See Results →</button>
         <div class="feedback" id="feedback-5"></div>
         <div class="explanation-box" id="explanation-5"></div>
@@ -841,35 +911,77 @@
 
     const scenarioExplanations = {
       1: `
-        <strong>✈ Tip:</strong> The <strong>gate</strong> is the place where passengers enter the plane.
-        A <strong>boarding group</strong> helps airlines board passengers in an organized way, so the area is less crowded.
-        Before boarding, staff usually check your <strong>passport</strong> and <strong>boarding pass</strong> to confirm your identity, flight, and seat.
+        <strong>✈ Tip: Boarding Information</strong>
+        <div class="visual-tip-grid">
+          <div class="mini-tip-card">🛂<br><strong>Passport</strong><br>Show it at the gate</div>
+          <div class="mini-tip-card">🎫<br><strong>Boarding Pass</strong><br>Shows your flight details</div>
+          <div class="mini-tip-card">🚪<br><strong>Gate</strong><br>B15</div>
+          <div class="mini-tip-card">👥<br><strong>Group</strong><br>3</div>
+        </div>
+        The <strong>gate</strong> is where passengers enter the plane.
+        A <strong>boarding group</strong> helps airlines board passengers in an organized way.
+        Staff usually check your <strong>passport</strong> and <strong>boarding pass</strong> before boarding.
       `,
       2: `
-        <strong>✈ Tip:</strong> On a plane, the <strong>row number</strong> tells you where your seat is from front to back.
+        <strong>✈ Tip: How Plane Seats Work</strong>
+        <div class="seat-map">
+          <div><strong>Example row layout</strong></div>
+          <div class="seat-row">
+            <div class="seat-box window">A<br><small>window</small></div>
+            <div class="seat-box middle highlight">B<br><small>middle</small></div>
+            <div class="seat-box aisle">C<br><small>aisle</small></div>
+          </div>
+          <div class="arrow-note">24B = Row 24 + Seat B = middle seat</div>
+        </div>
+        The <strong>row number</strong> tells you where your seat is from front to back.
         The <strong>seat letter</strong> tells you the position in that row.
-        On many planes, <strong>A and F</strong> are window seats, <strong>C and D</strong> are aisle seats, and <strong>B and E</strong> are middle seats.
-        So <strong>24B</strong> means row 24, middle seat.
       `,
       3: `
-        <strong>✈ Tip:</strong> The <strong>overhead bin</strong> is the storage space above the seats for larger carry-on bags.
-        Smaller personal items like handbags and small backpacks usually go <strong>under the seat in front of you</strong>.
-        Bags should not be left in the aisle because they can block people and create a safety problem.
+        <strong>✈ Tip: Where Bags Go</strong>
+        <div class="visual-tip-grid">
+          <div class="mini-tip-card">🧳<br><strong>Suitcase</strong><br>Overhead bin</div>
+          <div class="mini-tip-card">👜<br><strong>Handbag</strong><br>Under the seat</div>
+          <div class="mini-tip-card">🚶<br><strong>Aisle</strong><br>Keep clear</div>
+        </div>
+        The <strong>overhead bin</strong> is the storage space above the seats for larger carry-on bags.
+        Small personal items usually go <strong>under the seat in front of you</strong>.
+        Bags should not block the aisle.
       `,
       4: `
-        <strong>✈ Tip:</strong> An <strong>aisle seat</strong> is next to the walkway, a <strong>window seat</strong> is next to the window, and a <strong>middle seat</strong> is between them.
-        Passengers often say <strong>"Excuse me"</strong> when they need to get past someone.
+        <strong>✈ Tip: Window, Middle, and Aisle Seats</strong>
+        <div class="seat-map">
+          <div><strong>3-seat row example</strong></div>
+          <div class="seat-row">
+            <div class="seat-box window">A<br><small>window</small></div>
+            <div class="seat-box middle">B<br><small>middle</small></div>
+            <div class="seat-box aisle highlight">C<br><small>aisle</small></div>
+          </div>
+          <div class="arrow-note">If a passenger is in 24C, they need access from the aisle.</div>
+        </div>
+        An <strong>aisle seat</strong> is next to the walkway.
         A polite response is to stand up and let the other passenger get through.
       `,
       5: `
-        <strong>✈ Tip:</strong> Before take-off, passengers must follow safety instructions.
-        Your <strong>seatbelt</strong> should be fastened, your <strong>tray table</strong> should be up, and your <strong>seat</strong> should be upright.
-        Phones should be on <strong>airplane mode</strong> before take-off.
+        <strong>✈ Tip: Safety Before Take-off</strong>
+        <div class="checklist">
+          <div class="checklist-item">✅ Fasten your seatbelt</div>
+          <div class="checklist-item">✅ Put your tray table up</div>
+          <div class="checklist-item">✅ Put your seat upright</div>
+          <div class="checklist-item">✅ Turn on airplane mode</div>
+        </div>
+        Before take-off, passengers must follow safety instructions.
+        These steps help keep everyone safe during departure.
       `
     };
 
     function normalizeAnswer(text) {
       return text.toLowerCase().trim().replace(/\s+/g, ' ').replace(/[.,!?;:]/g, '');
+    }
+
+    function isCorrectAnswer(userAnswer, answerString) {
+      if (userAnswer === "") return false;
+      const answers = answerString.split('|').map(a => normalizeAnswer(a));
+      return answers.includes(userAnswer);
     }
 
     function startGame() {
@@ -893,14 +1005,9 @@
 
       inputs.forEach(input => {
         const userAnswer = normalizeAnswer(input.value);
-        const correctAnswer = normalizeAnswer(input.dataset.answer);
-
         input.classList.remove('correct', 'wrong');
 
-        if (
-          userAnswer !== "" &&
-          (userAnswer === correctAnswer || userAnswer.includes(correctAnswer) || correctAnswer.includes(userAnswer))
-        ) {
+        if (isCorrectAnswer(userAnswer, input.dataset.answer)) {
           input.classList.add('correct');
           correct++;
         } else {
@@ -930,7 +1037,6 @@
 
       explanationBox.innerHTML = scenarioExplanations[num];
       explanationBox.classList.add('show');
-
       nextBtn.style.display = 'inline-block';
     }
 
